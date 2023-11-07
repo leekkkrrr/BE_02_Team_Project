@@ -1,14 +1,16 @@
 package com.b2.supercoding_prj01.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
-@Getter @Setter
+@Builder
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "board")
 public class BoardEntity {
@@ -19,7 +21,7 @@ public class BoardEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_idx")
-    private UserEntity userEntity;
+    private UserEntity user;
 
     private String email;
     private String title;
@@ -29,4 +31,5 @@ public class BoardEntity {
     private Timestamp createdAt;
 
     private String content;
+
 }

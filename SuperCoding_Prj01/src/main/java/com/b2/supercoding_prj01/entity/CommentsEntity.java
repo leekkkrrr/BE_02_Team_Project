@@ -1,14 +1,14 @@
 package com.b2.supercoding_prj01.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Getter @Setter
+@Builder
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "comments")
 public class CommentsEntity {
@@ -19,15 +19,21 @@ public class CommentsEntity {
 
     @ManyToOne
     @JoinColumn(name = "board_idx")
-    private BoardEntity boardEntity;
+    private BoardEntity board;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_idx")
-    private UserEntity userEntity;
+    private UserEntity user;
 
     private String content;
     private String author;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    private Integer heart;
+
+    public void setHeart(Integer heart) {
+        this.heart = heart;
+    }
 }

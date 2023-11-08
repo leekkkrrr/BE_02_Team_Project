@@ -65,36 +65,4 @@ public class CommentsService {
         }
     }
 
-
-
-
-//    public static void updateComment(CommentsDto commentsDto, long postId) {
-//        BoardEntity board = boardRepository.findByPostId(commentsDto.getBoardId())
-//                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 게시물을 찾을 수 없습니다."));
-//
-//        Optional<CommentsEntity> existingComment = commentsRepository.findByPostId(postId);
-//        if (existingComment.isPresent()) {
-//            CommentsEntity commentsEntity = existingComment.get();
-//            commentsEntity.setContent(commentsDto.getContent());
-//            commentsRepository.save(commentsEntity);
-//        }
-//        else {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다.");
-//        }
-//
-//    }
-//
-//    public static void deleteComment(CommentsDto commentsDto, long postId) {
-//        Optional<CommentsEntity> existingComment = commentsRepository.findByPostId(postId);
-//        if (existingComment.isPresent()) {
-//            CommentsEntity commentsEntity = existingComment.get();
-//            commentsRepository.deleteById(commentsEntity.getPostId());
-//
-//        }
-//        else {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다.");
-//        }
-//    }
-
-
 }

@@ -23,13 +23,19 @@ public class BoardEntity {
     @JoinColumn(name = "user_idx")
     private UserEntity user;
 
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "author")
     private String author;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @Column(name = "content")
     private String content;
 
 }

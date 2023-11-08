@@ -4,11 +4,12 @@
 spring:
   datasource:
     username: root
-    password: qwe456
-    url: jdbc:mysql://localhost:3306/board?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&useInnoDB=true
+    password: 12341234
+    url: jdbc:mysql://localhost:3306/project_01
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 jpa:
+  database-platform:
   show-sql: true
   hibernate:
     ddl-auto: update

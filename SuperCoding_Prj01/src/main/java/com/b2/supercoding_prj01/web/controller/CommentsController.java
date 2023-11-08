@@ -46,7 +46,6 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
     }
 
-    // 해당 댓글에 좋아요 추가
     @PutMapping("/api/comments/{postId}")
     public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
         String author = jwtService.extractUserId(token);
@@ -71,6 +70,8 @@ public class CommentsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 가능한 댓글이 없습니다.");
         }
     }
+
+    // 해당 댓글에 좋아요 추가
     @Transactional
     @PostMapping("/{postId}/heart")
     public ResponseEntity<String> addHeart(@PathVariable Long postId,

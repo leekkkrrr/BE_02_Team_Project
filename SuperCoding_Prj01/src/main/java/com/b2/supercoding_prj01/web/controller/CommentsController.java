@@ -1,11 +1,15 @@
 package com.b2.supercoding_prj01.web.controller;
 
+import com.b2.supercoding_prj01.dto.CommentsDto;
+import com.b2.supercoding_prj01.service.CommentsService;
 import com.b2.supercoding_prj01.entity.CommentsEntity;
 import com.b2.supercoding_prj01.entity.HeartEntity;
 import com.b2.supercoding_prj01.repository.CommentsRepository;
 import com.b2.supercoding_prj01.repository.HeartRepository;
 import com.b2.supercoding_prj01.service.HeartService;
+import com.b2.supercoding_prj01.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +24,52 @@ public class CommentsController {
     private final CommentsRepository commentsRepository;
     private final HeartRepository heartRepository;
     private final HeartService heartService;
+    private final JwtService jwtService;
+    private final CommentsService commentsService;
 
+    @GetMapping("/api/comments")
+    public List<CommentsEntity> findAll(){
+        return commentsService.findAll();
+    }
 
+    @GetMapping("/api/comments/{boardId}")
+    public List<CommentsEntity> findByBoardId(@PathVariable long boardId){
+        return commentsService.findByAllBoardId(boardId);
+    }
 
+    @PostMapping("/api/comments")
+    public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+        String author = jwtService.extractUserId(token);
+        commentsDto.setAuthor(author);
+
+        commentsService.saveComment(commentsDto);
+        return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
+    }
+
+    @PutMapping("/api/comments/{postId}")
+    public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+        String author = jwtService.extractUserId(token);
+
+        if(author.equals(commentsDto.getAuthor())){
+            commentsService.updateComment(commentsDto, postId);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 수정되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정 가능한 댓글이 없습니다.");
+        }
+
+    }
+
+    @DeleteMapping("/api/comments/{postId}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+        String author = jwtService.extractUserId(token);
+
+        if(author.equals(commentsDto.getAuthor())){
+            commentsService.deleteComment(commentsDto, postId);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 삭제되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 가능한 댓글이 없습니다.");
+        }
+    }
 
     // 해당 댓글에 좋아요 추가
     @Transactional

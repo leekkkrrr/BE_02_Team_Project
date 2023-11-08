@@ -59,4 +59,14 @@ public class JwtService {
 
         return claims.getSubject(); // subject 즉 사용자 아이디를 리턴한다.
     }
+
+    public String extractUserId(String token) {
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(mySecretKey)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
 }

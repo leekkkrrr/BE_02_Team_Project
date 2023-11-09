@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,16 +21,16 @@ import java.util.Optional;
 public class CommentsService {
 
     private final CommentsRepository commentsRepository;
-    private final   BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
     public List<CommentsEntity> findAll() {
         return commentsRepository.findAll();
     }
 
-    public  List<CommentsEntity> findByAllBoardId(long boardId) {
+    public List<CommentsEntity> findByAllBoardId(long boardId) {
         BoardEntity board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 게시판을 찾을 수 없습니다."));
-        return commentsRepository.findByBoard(boardId);
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 게시판을 찾을 수 없습니다. boardId=" + boardId));
+        return commentsRepository.findByBoard(board);
     }
 
     public void saveComment(CommentsDto commentsDto) {
@@ -97,4 +98,5 @@ public class CommentsService {
 //    }
 
 
+    }
 }

@@ -27,7 +27,7 @@ public class CommentsController {
     private final JwtService jwtService;
     private final CommentsService commentsService;
 
-    @GetMapping("/api/comments")
+    @GetMapping("")
     public List<CommentsEntity> findAll(){
         return commentsService.findAll();
     }
@@ -36,8 +36,9 @@ public class CommentsController {
     public List<CommentsEntity> findByBoardId(@PathVariable long boardId){
         return commentsService.findByAllBoardId(boardId);
     }
+@GetMapping("/{boardId}")
 
-    @PostMapping("/api/comments")
+    @PostMapping("")
     public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
         String author = jwtService.extractUserId(token);
         commentsDto.setAuthor(author);
@@ -46,8 +47,7 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
     }
 
-    // 해당 댓글에 좋아요 추가
-    @PutMapping("/api/comments/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
         String author = jwtService.extractUserId(token);
 
@@ -60,7 +60,7 @@ public class CommentsController {
 
     }
 
-    @DeleteMapping("/api/comments/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
         String author = jwtService.extractUserId(token);
 

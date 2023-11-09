@@ -32,11 +32,10 @@ public class CommentsController {
         return commentsService.findAll();
     }
 
-    @GetMapping("/api/comments/{boardId}")
+    @GetMapping("/{boardId}")
     public List<CommentsEntity> findByBoardId(@PathVariable long boardId){
         return commentsService.findByAllBoardId(boardId);
     }
-@GetMapping("/{boardId}")
 
     @PostMapping("")
     public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {

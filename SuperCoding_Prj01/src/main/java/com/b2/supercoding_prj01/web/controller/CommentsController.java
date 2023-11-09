@@ -77,6 +77,8 @@ public class CommentsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 가능한 댓글이 없습니다.");
         }
     }
+  
+   // 해당 댓글에 좋아요 추가
     @Transactional
     @PostMapping("/{postId}/heart")
     public ResponseEntity<String> addHeart(@PathVariable Long postId,

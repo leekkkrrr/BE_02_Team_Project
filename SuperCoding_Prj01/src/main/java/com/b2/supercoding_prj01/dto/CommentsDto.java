@@ -27,6 +27,7 @@ public class CommentsDto {
     @JsonProperty("created_at")
     private Timestamp createdAt;
 
+
     public static CommentsDto fromEntity(CommentsEntity entity) {
         CommentsDto dto = new CommentsDto();
         dto.setPostId(entity.getPostId());

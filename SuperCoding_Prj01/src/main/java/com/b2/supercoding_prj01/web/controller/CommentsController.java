@@ -44,10 +44,11 @@ public class CommentsController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/post")
+    @PostMapping("")
     public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
-        String author = jwtService.extractUserId(token);
-        commentsDto.setAuthor(author);
+         String author = jwtService.extractUserId(token);
+//       String author = commentsDto.getAuthor();
+         commentsDto.setAuthor(author);
 
         commentsService.saveComment(commentsDto);
         return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");

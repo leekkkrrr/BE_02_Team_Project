@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,17 +29,23 @@ public class CommentsController {
     private final CommentsService commentsService;
 
     @GetMapping("")
-    public List<CommentsEntity> findAll(){
-        return commentsService.findAll();
+    public List<CommentsDto> findAll(){
+        List<CommentsEntity> commentsEntities = commentsService.findAll();
+        return commentsEntities.stream()
+                .map(CommentsDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{boardId}")
-    public List<CommentsEntity> findByBoardId(@PathVariable long boardId){
-        return commentsService.findByAllBoardId(boardId);
+    public List<CommentsDto> findByBoardId(@PathVariable long boardId){
+        List<CommentsEntity> commentsEntities = commentsService.findByAllBoardId(boardId);
+        return commentsEntities.stream()
+                .map(CommentsDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+    @PostMapping("/post")
+    public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
         String author = jwtService.extractUserId(token);
         commentsDto.setAuthor(author);
 
@@ -47,7 +54,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+    public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
         String author = jwtService.extractUserId(token);
 
         if(author.equals(commentsDto.getAuthor())){
@@ -60,7 +67,7 @@ public class CommentsController {
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("Token") String token) {
+    public ResponseEntity<?> deleteComment(@PathVariable Long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
         String author = jwtService.extractUserId(token);
 
         if(author.equals(commentsDto.getAuthor())){

@@ -17,7 +17,6 @@ public class CommentsDto {
     @JsonProperty("id")
     private Long postId;
 
-    @NonNull
     private String content;
 
     private String author;
@@ -26,7 +25,15 @@ public class CommentsDto {
     private Long boardId;
 
     @JsonProperty("created_at")
-    private Timestamp createAt;
+    private Timestamp createdAt;
 
-
+    public static CommentsDto fromEntity(CommentsEntity entity) {
+        CommentsDto dto = new CommentsDto();
+        dto.setPostId(entity.getPostId());
+        dto.setContent(entity.getContent());
+        dto.setAuthor(entity.getAuthor());
+        dto.setBoardId(entity.getBoard().getBoardId());
+        dto.setCreatedAt(entity.getCreatedAt());
+        return dto;
+    }
 }

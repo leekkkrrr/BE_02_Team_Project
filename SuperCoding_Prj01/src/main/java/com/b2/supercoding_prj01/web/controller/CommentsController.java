@@ -45,37 +45,36 @@ public class CommentsController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createComment(@RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
-         String author = jwtService.extractUserId(token);
-//       String author = commentsDto.getAuthor();
-         commentsDto.setAuthor(author);
-
-        commentsService.saveComment(commentsDto);
-        return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
+    public ResponseEntity<String> createComment(@RequestBody CommentsDto commentsDto) {
+        try {
+            commentsService.saveComment(commentsDto);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+        }
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<?> updateComment(@PathVariable long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
-        String author = jwtService.extractUserId(token);
-
-        if(author.equals(commentsDto.getAuthor())){
-            commentsService.updateComment(commentsDto, postId);
+    public ResponseEntity<String> updateComment(@RequestBody CommentsDto commentsDto) {
+        try {
+            commentsService.updateComment(commentsDto, commentsDto.getPostId());
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 수정되었습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정 가능한 댓글이 없습니다.");
         }
-
+         catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+        }
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long postId, @RequestBody CommentsDto commentsDto, @RequestHeader("TOKEN") String token) {
-        String author = jwtService.extractUserId(token);
-
-        if(author.equals(commentsDto.getAuthor())){
-            commentsService.deleteComment(commentsDto, postId);
+    public ResponseEntity<String> deleteComment(@PathVariable long postId) {
+        try {
+            commentsService.deleteComment(postId);
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 삭제되었습니다.");
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 가능한 댓글이 없습니다.");
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
         }
     }
   

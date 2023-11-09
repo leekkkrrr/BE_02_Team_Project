@@ -3,8 +3,10 @@ package com.b2.supercoding_prj01.service;
 import com.b2.supercoding_prj01.dto.CommentsDto;
 import com.b2.supercoding_prj01.entity.BoardEntity;
 import com.b2.supercoding_prj01.entity.CommentsEntity;
+import com.b2.supercoding_prj01.entity.UserEntity;
 import com.b2.supercoding_prj01.repository.BoardRepository;
 import com.b2.supercoding_prj01.repository.CommentsRepository;
+import com.b2.supercoding_prj01.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     public List<CommentsEntity> findAll() {
         return commentsRepository.findAll();
@@ -37,10 +40,14 @@ public class CommentsService {
         BoardEntity board = boardRepository.findById(commentsDto.getBoardId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 게시물을 찾을 수 없습니다."));
 
+        UserEntity userEntity = userRepository.findById(commentsDto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID의 사용자를 찾을 수 없습니다. userId=" + commentsDto.getUserId()));
+
         CommentsEntity commentsEntity = CommentsEntity.builder()
                 .board(board)
                 .author(commentsDto.getAuthor())
                 .content(commentsDto.getContent())
+                .user(userEntity) // user 필드에 실제 UserEntity 설정
                 .build();
 
         commentsRepository.save(commentsEntity);
@@ -56,7 +63,7 @@ public class CommentsService {
             throw new EntityNotFoundException("댓글을 찾을 수 없습니다.");
         }
     }
-    public void deleteComment(CommentsDto commentsDto, long postId) {
+    public void deleteComment( long postId) {
         Optional<CommentsEntity> existingComment = commentsRepository.findByPostId(postId);
         if (existingComment.isPresent()) {
             commentsRepository.deleteById(postId);

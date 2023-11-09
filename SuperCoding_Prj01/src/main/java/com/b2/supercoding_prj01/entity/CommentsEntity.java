@@ -3,9 +3,11 @@ package com.b2.supercoding_prj01.entity;
 import com.b2.supercoding_prj01.dto.CommentsDto;
 import lombok.AllArgsConstructor;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -35,8 +37,11 @@ public class CommentsEntity {
     @Column(name = "author")
     private String author;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+
+@CreationTimestamp
+@Column(name = "created_at", updatable = false)
+private LocalDateTime createdAt;
+
 
     private Integer heart;
 

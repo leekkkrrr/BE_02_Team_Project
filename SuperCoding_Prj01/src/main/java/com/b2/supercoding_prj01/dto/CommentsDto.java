@@ -24,6 +24,10 @@ public class CommentsDto {
     @JsonProperty("board_id")
     private Long boardId;
 
+    @JsonProperty("user_id")
+    private Long userId;
+
+
     @JsonProperty("created_at")
     private Timestamp createdAt;
 
@@ -34,7 +38,8 @@ public class CommentsDto {
         dto.setContent(entity.getContent());
         dto.setAuthor(entity.getAuthor());
         dto.setBoardId(entity.getBoard().getBoardId());
-        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUserId(entity.getUser().getUserId());
+        dto.setCreatedAt(Timestamp.valueOf(entity.getCreatedAt()));
         return dto;
     }
 }

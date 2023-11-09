@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +81,6 @@ public class UserService {
             e.printStackTrace();
             throw new BadCredentialsException("잘못된 자격증명입니다");
         }
-        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("이미 등록된 회원입니다.");
     }
 
 
@@ -107,6 +106,3 @@ public class UserService {
     }
 }
 
-
-
-}

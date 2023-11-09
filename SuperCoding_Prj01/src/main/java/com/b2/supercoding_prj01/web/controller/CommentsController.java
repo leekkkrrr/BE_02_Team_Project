@@ -50,7 +50,7 @@ public class CommentsController {
             commentsService.saveComment(commentsDto);
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 작성되었습니다.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 작성에 실패했습니다.");
         }
     }
 
@@ -63,7 +63,7 @@ public class CommentsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정 가능한 댓글이 없습니다.");
         }
          catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정에 실패했습니다.");
         }
     }
 
@@ -74,7 +74,7 @@ public class CommentsController {
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 성공적으로 삭제되었습니다.");
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 삭제에 실패했습니다.");
         }
     }
   

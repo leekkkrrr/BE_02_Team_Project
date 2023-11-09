@@ -26,7 +26,7 @@ public class CommentsDto {
     private Long boardId;
 
     @JsonProperty("created_at")
-    private Timestamp createAt;
+    private Timestamp createdAt;
 
 
 }
